@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bird Sound Classification — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">Machine Learning · Audio Classification</div>
+      <h1 class="detail-title">Bird Sound Classification</h1>
+      <p class="detail-subtitle">Can a neural network tell birds apart just by listening? Using spectrogram images of bird calls from 12 Seattle-area species, multiple CNN architectures were built and compared — revealing when deep learning works brilliantly, and when acoustically similar species make classification genuinely difficult.</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Binary Accuracy</div>
+          <div class="meta-value">100%</div>
+        </div>
+        <div>
+          <div class="meta-label">Multi-class Accuracy</div>
+          <div class="meta-value">70% · 12 species</div>
+        </div>
+        <div>
+          <div class="meta-label">Dataset</div>
+          <div class="meta-value">~570 spectrograms</div>
+        </div>
+        <div>
+          <div class="meta-label">Framework</div>
+          <div class="meta-value">TensorFlow / Keras</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">Can deep learning learn to hear what birders hear?</h2>
+          <p class="chapter-text">Experienced birders can identify dozens of species by ear alone — a skill that takes years to develop. Automating this would unlock real value for wildlife monitoring, biodiversity research, and conservation tracking. The starting point was 12 bird species common to the Seattle area, sourced from the Xeno-Canto bird recording library. The challenge: with only 36–59 samples per species, could CNNs learn meaningful acoustic patterns — or would the small dataset be a dealbreaker?</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">Turning sound into images, then teaching a model to see</h2>
+          <p class="chapter-text">Each 2-second audio clip was converted into a spectrogram — a visual map of sound frequencies over time — resulting in 343×256 pixel images stored in HDF5 format. Three custom CNN architectures were designed and compared: a Basic CNN, one with Dropout regularization, and one with L2 regularization. The project tackled two separate tasks: binary classification (American Crow vs House Finch) to establish a performance ceiling, and multi-class classification across all 12 species to test real-world difficulty.</p>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">100%</div>
+              <div class="stat-label">Binary accuracy — Crow vs Finch perfectly separated</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">70%</div>
+              <div class="stat-label">Multi-class accuracy across 12 species</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">+4.3%</div>
+              <div class="stat-label">Accuracy gain from adding regularization</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Perfect results and honest limitations</h2>
+          <p class="chapter-text">The binary classifier achieved perfect accuracy — American Crow and House Finch have acoustically distinct enough calls that a simple CNN separates them flawlessly within 3 training epochs. The multi-class task told a more nuanced story. At 70%, the regularized model was the clear winner, but species like the Red-Winged Blackbird (40% accuracy) exposed where acoustic overlap makes classification genuinely hard. The key takeaway for real-world deployment: species-specific binary detectors may outperform a single general multi-class model when the target species are known in advance.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">TensorFlow</span>
+            <span class="tech-chip">Keras</span>
+            <span class="tech-chip">NumPy</span>
+            <span class="tech-chip">h5py</span>
+            <span class="tech-chip">Matplotlib</span>
+            <span class="tech-chip">Seaborn</span>
+            <span class="tech-chip">scikit-learn</span>
+            <span class="tech-chip">Jupyter</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/bird-species-classification-cnn" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

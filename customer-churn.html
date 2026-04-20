@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Churn Analysis — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">Machine Learning · Telecom Analytics</div>
+      <h1 class="detail-title">Customer Churn Analysis</h1>
+      <p class="detail-subtitle">Telecom companies typically lose 15–25% of their customers every year. This project analyzes 7,043 telecom customers to find out who is about to leave — and why — so retention teams can act before it's too late.</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Recall</div>
+          <div class="meta-value">79.4%</div>
+        </div>
+        <div>
+          <div class="meta-label">ROC-AUC</div>
+          <div class="meta-value">0.825</div>
+        </div>
+        <div>
+          <div class="meta-label">Dataset</div>
+          <div class="meta-value">7,043 customers</div>
+        </div>
+        <div>
+          <div class="meta-label">Model</div>
+          <div class="meta-value">Logistic Regression</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">Who is about to leave, and can we predict it?</h2>
+          <p class="chapter-text">Telecom companies lose 15–25% of their customers every year. Most of that churn is preventable — but only if you catch it early. The problem is that retention teams can't call every customer, so they need to know which ones are actually at risk. This project digs into a dataset of 7,043 customers across demographics, services, contracts, and billing patterns to answer one question: what does a customer who is about to leave actually look like?</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">Exploratory analysis first, then a model that prioritizes recall</h2>
+          <p class="chapter-text">The project runs in two stages. First, a thorough exploratory analysis across all 20+ variables — uncovering which customer segments churn most and least. The patterns were striking: month-to-month contract customers churn at 42%, while two-year contract customers churn at just 3%. Fiber optic internet customers churn at 41% versus 19% for DSL. New customers in their first year are especially vulnerable, with churn rates above 50%. These findings shaped the modeling stage, where a Logistic Regression model with class balancing was trained — prioritizing recall to catch as many at-risk customers as possible, even at the cost of some false alarms.</p>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">79.4%</div>
+              <div class="stat-label">Recall — 297 of 374 actual churners identified</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">0.825</div>
+              <div class="stat-label">ROC-AUC score</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">14×</div>
+              <div class="stat-label">Lower churn risk on two-year vs month-to-month contracts</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Four out of five churners caught before they leave</h2>
+          <p class="chapter-text">The model flags 4 out of every 5 customers who will actually churn, giving retention teams a precise list to work from rather than guessing. The strongest churn signal is contract type — customers on two-year contracts have a coefficient of -1.554, making it the single most protective factor in the model. The clearest business recommendation: a contract upgrade incentive program targeting month-to-month customers could reduce their churn rate from 42% down to the 3% seen in long-term contracts. With a typical telecom customer lifetime value of $1,500 and a retention campaign cost of $75 per customer, that's a strong return on a targeted outreach effort.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">scikit-learn</span>
+            <span class="tech-chip">Logistic Regression</span>
+            <span class="tech-chip">Pandas</span>
+            <span class="tech-chip">NumPy</span>
+            <span class="tech-chip">Matplotlib</span>
+            <span class="tech-chip">Seaborn</span>
+            <span class="tech-chip">Jupyter</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/customer-churn-analysis" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

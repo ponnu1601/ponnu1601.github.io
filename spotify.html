@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spotify Listening History — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">BI & Dashboards · Personal Analytics</div>
+      <h1 class="detail-title">Spotify Listening History</h1>
+      <p class="detail-subtitle">20 months of personal listening data — 2,727 records, extracted from raw JSON, cleaned in Python, and brought to life in a 4-page interactive Power BI dashboard with 21 custom DAX measures.</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Records</div>
+          <div class="meta-value">2,727 listening events</div>
+        </div>
+        <div>
+          <div class="meta-label">Period</div>
+          <div class="meta-value">Apr 2024 – Dec 2025</div>
+        </div>
+        <div>
+          <div class="meta-label">Dashboard</div>
+          <div class="meta-value">4 pages · 21 DAX measures</div>
+        </div>
+        <div>
+          <div class="meta-label">Tools</div>
+          <div class="meta-value">Python + Power BI</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">What does 20 months of listening actually look like?</h2>
+          <p class="chapter-text">Spotify knows a lot about how you listen — but that data stays locked in their app. By requesting the Extended Streaming History export, it's possible to get the raw JSON behind every play, skip, and session. The goal was to go from that messy raw export to a clean, interactive dashboard that tells a real story: not just what was played, but how listening behavior changed over time, when music gets skipped, and what patterns emerge across months and years.</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">Python for the heavy lifting, Power BI for the story</h2>
+          <p class="chapter-text">The pipeline runs in two stages. First, Python handles the raw data — parsing JSON, filtering out podcasts and ads to keep songs only, converting timestamps from UTC to Pacific Time, and engineering temporal features like hour of day, day of week, and 6-month periods. The cleaned CSV then feeds into a 4-page Power BI dashboard with 21 custom DAX measures covering everything from basic KPIs to skip rate trends, artist consistency gauges, and year-over-year comparisons between 2024 and 2025.</p>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">2,727</div>
+              <div class="stat-label">Listening records across 20 months</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">21</div>
+              <div class="stat-label">Custom DAX measures in Power BI</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">−8pp</div>
+              <div class="stat-label">Skip rate drop — 20.55% in 2024 to 12.52% in 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Listening behavior tells a story of growing taste</h2>
+          <p class="chapter-text">The most interesting finding: skip rate dropped from 20.55% in 2024 to 12.52% in 2025 — nearly 8 percentage points. That's not random. It points to either better music curation over time, more patient listening habits, or both. The skip patience breakdown reveals that most skips happen within the first 15 seconds, meaning the decision to skip is almost instant — a gut reaction rather than gradual disinterest. Peak listening hours stayed consistent across both years, suggesting stable daily routines that playlists could be built around.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">Pandas</span>
+            <span class="tech-chip">JSON</span>
+            <span class="tech-chip">Jupyter</span>
+            <span class="tech-chip">Power BI</span>
+            <span class="tech-chip">DAX</span>
+            <span class="tech-chip">Power Query</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/spotify_listening_journey" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Segmentation — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">Analytics & Testing · Customer Analytics</div>
+      <h1 class="detail-title">Customer Segmentation</h1>
+      <p class="detail-subtitle">541,909 transactions from a UK gift retailer, one year of data, and a single question: which customers are actually worth the most — and what should be done differently for each of them?</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Transactions</div>
+          <div class="meta-value">541,909</div>
+        </div>
+        <div>
+          <div class="meta-label">Customers</div>
+          <div class="meta-value">4,372</div>
+        </div>
+        <div>
+          <div class="meta-label">Segments</div>
+          <div class="meta-value">4 clusters</div>
+        </div>
+        <div>
+          <div class="meta-label">Method</div>
+          <div class="meta-value">RFM + K-Means</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">Who are your customers, really?</h2>
+          <p class="chapter-text">A UK online gift retailer had over half a million transactions but no systematic way to tell a loyal high-spender from a one-time buyer who drifted away. Without that distinction, marketing budgets get spread thin, retention efforts miss the mark, and the customers who actually drive revenue don't get the attention they deserve. The goal was to move from a single undifferentiated customer base to clearly defined segments — each with a different behavior profile and a different action plan.</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">RFM scoring, then letting K-Means find the natural groups</h2>
+          <p class="chapter-text">Each of the 4,372 customers (after data cleaning) was scored on three dimensions: Recency — how recently they last purchased, Frequency — how often they buy, and Monetary — how much they spend in total. These RFM scores were then fed into K-Means clustering, with the elbow method used to find the optimal number of segments. Four clusters emerged cleanly, each with a distinct behavioral signature that mapped directly to a business priority.</p>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">4</div>
+              <div class="stat-label">Distinct segments — VIP, High-Value, Regular, At-Risk</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">0.3%</div>
+              <div class="stat-label">VIP customers — spending £100,000+ each</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">24.4%</div>
+              <div class="stat-label">At-Risk customers — inactive for 8+ months</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Four segments, four completely different strategies</h2>
+          <p class="chapter-text">The VIP segment — just 11 customers out of 4,372 — each spend over £100,000 and buy more than 150 times. Losing even one of them is significant, so they warrant dedicated account management and white-glove service. At the other end, 24% of customers haven't purchased in over 8 months — they need a win-back campaign before they're gone for good. The largest group, Regular customers at 71%, are the biggest growth opportunity: they already buy, just not often enough. Targeted upsell campaigns and a loyalty program with clear progression tiers could move a meaningful portion of them toward the High-Value segment over time.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">Pandas</span>
+            <span class="tech-chip">NumPy</span>
+            <span class="tech-chip">scikit-learn</span>
+            <span class="tech-chip">K-Means</span>
+            <span class="tech-chip">Matplotlib</span>
+            <span class="tech-chip">Seaborn</span>
+            <span class="tech-chip">Jupyter</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/customer-segmentation-analysis" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

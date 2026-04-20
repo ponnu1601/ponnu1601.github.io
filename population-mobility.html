@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Population Mobility Prediction — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">Machine Learning · Transportation Analytics</div>
+      <h1 class="detail-title">Population Mobility Prediction</h1>
+      <p class="detail-subtitle">Transportation agencies spend billions on infrastructure without knowing which counties actually need it most. This project uses Bureau of Transportation Statistics data and machine learning to predict long-distance travel demand — county by county, with 98.3% accuracy.</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Best Model</div>
+          <div class="meta-value">Random Forest</div>
+        </div>
+        <div>
+          <div class="meta-label">Accuracy</div>
+          <div class="meta-value">R² = 0.983</div>
+        </div>
+        <div>
+          <div class="meta-label">Scope</div>
+          <div class="meta-value">39 counties · Washington State</div>
+        </div>
+        <div>
+          <div class="meta-label">Data Source</div>
+          <div class="meta-value">Bureau of Transportation Statistics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">Where does long-distance travel actually come from?</h2>
+          <p class="chapter-text">Every year, state transportation agencies make massive funding decisions — new highways, bridge upgrades, regional connectors — often guided by population estimates that don't reflect how people actually move. A densely populated county isn't necessarily a high-travel county. The real question is: which counties are generating the most long-distance trips, and can we predict that precisely enough to change how infrastructure money gets spent?</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">Letting the data pick the right model</h2>
+          <p class="chapter-text">Rather than assuming one algorithm would work best, 10 regression models were put to the test — from simple Linear Regression and Ridge/Lasso to SVR, Decision Trees, Random Forest, Gradient Boosting, and Bagging — all trained on Bureau of Transportation Statistics trip data across all 39 counties in Washington State. Features included the full spectrum of trip distance bins (under 1 mile all the way to 500+ miles) alongside population size and urban/rural classification. The gap between approaches was stark: tree-based models captured patterns that linear methods completely missed, with Random Forest emerging as the clear winner.</p>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-num">98.3%</div>
+              <div class="stat-label">Prediction accuracy with Random Forest</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">760%</div>
+              <div class="stat-label">Improvement over linear baseline</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">66%</div>
+              <div class="stat-label">Predictive power from medium-distance trips (3–5 miles)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Rural counties need highways. Urban counties don't.</h2>
+          <p class="chapter-text">The findings tell a clear story. Long-distance travel rates across Washington's 39 counties span an 18.5 percentage point range — Garfield County at 22.9% on one end, King County (Seattle) at 5.1% on the other. Rural counties consistently average around 15.6% long-distance trips; urban counties sit at 6.2%. That gap isn't subtle — it's a direct signal for where regional highway investment delivers the most value versus where local transit makes more sense. At ±0.37% prediction precision, this model is accurate enough to actually move budget decisions.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">scikit-learn</span>
+            <span class="tech-chip">Random Forest</span>
+            <span class="tech-chip">Gradient Boosting</span>
+            <span class="tech-chip">Pandas</span>
+            <span class="tech-chip">NumPy</span>
+            <span class="tech-chip">Matplotlib</span>
+            <span class="tech-chip">Seaborn</span>
+            <span class="tech-chip">Jupyter</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/county-mobility-analysis" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

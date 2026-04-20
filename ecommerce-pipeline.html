@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Commerce Data Pipeline with ML Forecasting — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 40px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .detail-hero {
+      border-bottom: 0.5px solid var(--border);
+      padding-bottom: 40px;
+      margin-bottom: 56px;
+    }
+
+    .detail-category {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+    }
+
+    .detail-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      line-height: 1.15;
+      color: var(--cream);
+      margin-bottom: 18px;
+    }
+
+    .detail-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .detail-meta {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .meta-value {
+      font-size: 16px;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .detail-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    .chapter { margin-bottom: 48px; }
+
+    .chapter-num {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--cream);
+      margin-bottom: 16px;
+    }
+
+    .chapter-text {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 20px;
+    }
+
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      color: var(--cream);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .detail-sidebar {
+      position: sticky;
+      top: 96px;
+    }
+
+    .sidebar-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .tech-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .tech-chip {
+      font-size: 12px;
+      padding: 4px 11px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+      border-radius: 3px;
+      border: 0.5px solid rgba(201,168,76,0.2);
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      font-size: 14px;
+      background: rgba(201,168,76,0.04);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      color: var(--cream);
+      text-decoration: none;
+      margin-bottom: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .link-btn:last-child { margin-bottom: 0; }
+    .link-btn:hover { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+
+    @media (max-width: 860px) {
+      .detail-body { grid-template-columns: 1fr; }
+      .detail-sidebar { position: static; }
+      .detail-title { font-size: 36px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .stats-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <a href="projects.html" class="back-link">← Back to Projects</a>
+
+    <div class="detail-hero">
+      <div class="detail-category">Data Engineering · ML · BI</div>
+      <h1 class="detail-title">E-Commerce Data Pipeline with ML Forecasting</h1>
+      <p class="detail-subtitle">A fully automated, end-to-end data engineering pipeline — ingesting synthetic orders daily, transforming them through a multi-layer Snowflake architecture, detecting anomalies, forecasting revenue, and surfacing everything in a live dashboard with an AI assistant.</p>
+      <div class="detail-meta">
+        <div>
+          <div class="meta-label">Phases</div>
+          <div class="meta-value">5 automated stages</div>
+        </div>
+        <div>
+          <div class="meta-label">Pipeline</div>
+          <div class="meta-value">Runs daily · ~3 min end-to-end</div>
+        </div>
+        <div>
+          <div class="meta-label">Data Quality</div>
+          <div class="meta-value">36 dbt tests · all passing</div>
+        </div>
+        <div>
+          <div class="meta-label">Forecast</div>
+          <div class="meta-value">30-day revenue · 7-day demand</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-body">
+
+      <div class="detail-main">
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 01 — The Question</div>
+          <h2 class="chapter-title">What does a production-grade data pipeline actually look like?</h2>
+          <p class="chapter-text">Most analytics projects start with a clean CSV. Real pipelines are messier — data arrives daily, breaks unexpectedly, and needs to be tested, transformed, and monitored automatically. This project simulates what a live e-commerce data stack looks like end to end — daily order generation, idempotent ingestion into Snowflake, multi-layer dbt transformations with data quality tests, automated anomaly detection, ML forecasting, and a live dashboard with a natural language AI assistant. Every piece runs automatically each day without any manual intervention, which is the point: pipelines should run themselves.</p>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 02 — The Method</div>
+          <h2 class="chapter-title">Five phases, one automated chain</h2>
+          <p class="chapter-text">The pipeline is built in five sequential phases, each triggered only if the previous one succeeds. Prefect handles the orchestration on a daily cron schedule, with retry logic built into each flow. The data architecture follows a medallion pattern — Raw, Staging, and Mart — with dbt managing transformations and 36 data quality tests enforcing integrity at every layer. Anomaly detection uses Isolation Forest against daily order count and revenue, and ML forecasting runs two Prophet models: one for 30-day revenue, and twenty separate models for per-product demand over 7 days.</p>
+
+          <div style="position:relative; margin-top:28px;" id="zz-wrap">
+            <div style="position:relative;" id="zz"></div>
+          </div>
+
+          <style>
+            .zz-box {
+              position: absolute;
+              width: 160px;
+              padding: 14px 12px;
+              border-radius: 8px;
+              border: 0.5px solid rgba(201,168,76,0.25);
+              background: var(--card);
+              text-align: center;
+              transition: border-color 0.3s, background 0.3s;
+            }
+            .zz-box.active {
+              border-color: var(--gold);
+              background: rgba(201,168,76,0.1);
+            }
+            .zz-num { font-size: 10px; color: var(--gold); margin-bottom: 4px; letter-spacing: 0.1em; }
+            .zz-name { font-size: 13px; color: var(--cream); font-weight: 500; }
+            .zz-sub { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+          </style>
+
+          <script>
+          (function() {
+            const stages = [
+              { num:'01', name:'Ingestion',   sub:'Python · Snowflake MERGE' },
+              { num:'02', name:'dbt',          sub:'Raw → Staging → Mart' },
+              { num:'03', name:'Detection',    sub:'Isolation Forest · Anomaly Log' },
+              { num:'04', name:'Forecasting',  sub:'Prophet · 30-day revenue' },
+              { num:'05', name:'Dashboard',    sub:'Streamlit · Groq AI Assistant' },
+            ];
+
+            const BOX_W = 160, BOX_H = 72;
+            const COL_L = 0, COL_R = 220;
+            const ROW_GAP = 100;
+            const TOTAL_H = (stages.length - 1) * ROW_GAP + BOX_H;
+
+            const wrap = document.getElementById('zz');
+            wrap.style.height = TOTAL_H + 'px';
+
+            const positions = stages.map((_, i) => ({
+              x: i % 2 === 0 ? COL_L : COL_R,
+              y: i * ROW_GAP
+            }));
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+            svg.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;';
+            wrap.appendChild(svg);
+
+            const arrowPaths = [];
+            for (let i = 0; i < positions.length - 1; i++) {
+              const from = positions[i], to = positions[i+1];
+              const fx = from.x + BOX_W/2, fy = from.y + BOX_H;
+              const tx = to.x + BOX_W/2,   ty = to.y;
+
+              const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+              const d = `M${fx},${fy} C${fx},${fy+32} ${tx},${ty-32} ${tx},${ty}`;
+              path.setAttribute('d', d);
+              path.setAttribute('fill','none');
+              path.setAttribute('stroke','rgba(201,168,76,0.2)');
+              path.setAttribute('stroke-width','1.5');
+              path.setAttribute('stroke-dasharray','4 4');
+              svg.appendChild(path);
+              arrowPaths.push(path);
+
+              // arrowhead triangle at destination
+              const ah = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+              const ax = tx, ay = ty;
+              const dir = tx > fx ? 1 : -1;
+              ah.setAttribute('points',`${ax},${ay} ${ax-5},${ay-8} ${ax+5},${ay-8}`);
+              ah.setAttribute('fill','rgba(201,168,76,0.4)');
+              svg.appendChild(ah);
+            }
+
+            const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+            dot.setAttribute('r','5'); dot.setAttribute('fill','#c9a84c'); dot.setAttribute('opacity','0');
+            svg.appendChild(dot);
+
+            const boxes = stages.map((s, i) => {
+              const div = document.createElement('div');
+              div.className = 'zz-box';
+              div.style.left = positions[i].x + 'px';
+              div.style.top  = positions[i].y + 'px';
+              div.innerHTML = `<div class="zz-num">${s.num}</div><div class="zz-name">${s.name}</div><div class="zz-sub">${s.sub}</div>`;
+              wrap.appendChild(div);
+              return div;
+            });
+
+            function animDot(pathIdx, startTs, ts) {
+              const duration = 900;
+              const p = Math.min((ts - startTs) / duration, 1);
+              const path = arrowPaths[pathIdx];
+              const len = path.getTotalLength();
+              const pt = path.getPointAtLength(len * p);
+              dot.setAttribute('cx', pt.x); dot.setAttribute('cy', pt.y);
+              dot.setAttribute('opacity','1');
+
+              if (p < 1) {
+                requestAnimationFrame(t => animDot(pathIdx, startTs, t));
+              } else {
+                dot.setAttribute('opacity','0');
+                boxes[pathIdx+1].classList.add('active');
+                setTimeout(() => boxes[pathIdx+1].classList.remove('active'), 500);
+                const next = pathIdx + 1;
+                if (next < arrowPaths.length) {
+                  setTimeout(() => requestAnimationFrame(t => animDot(next, t, t)), 400);
+                } else {
+                  setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active'));
+                    requestAnimationFrame(t => animDot(0, t, t));
+                  }, 900);
+                }
+              }
+            }
+
+            boxes[0].classList.add('active');
+            setTimeout(() => {
+              boxes[0].classList.remove('active');
+              requestAnimationFrame(t => animDot(0, t, t));
+            }, 700);
+          })();
+          </script>
+        </div>
+
+        <div class="chapter">
+          <div class="chapter-num">Chapter 03 — The Impact</div>
+          <h2 class="chapter-title">Everything a data team needs, running without them</h2>
+          <p class="chapter-text">The entire pipeline — from raw order generation to updated dashboard — completes in roughly 3 minutes each day. The AI assistant on Page 4 uses a two-call Groq pattern: the first call generates SQL from a natural language question using the full mart schema as context, that SQL runs against Snowflake, and the second call translates the results back into a plain English answer. The forecast accuracy currently sits at a MAPE of 52% — expected given only 40 days of synthetic data with no underlying trend, and improving daily as the training window grows.</p>
+        </div>
+
+      </div>
+
+      <div class="detail-sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Tech Stack</div>
+          <div class="tech-list">
+            <span class="tech-chip">Python</span>
+            <span class="tech-chip">Snowflake</span>
+            <span class="tech-chip">dbt Core</span>
+            <span class="tech-chip">Prefect</span>
+            <span class="tech-chip">Prophet</span>
+            <span class="tech-chip">Isolation Forest</span>
+            <span class="tech-chip">Streamlit</span>
+            <span class="tech-chip">Plotly</span>
+            <span class="tech-chip">Groq API</span>
+            <span class="tech-chip">SQLAlchemy</span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Links</div>
+          <a href="https://github.com/ponnu1601/ecommerce-data-pipeline" target="_blank" class="link-btn">
+            View on GitHub <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

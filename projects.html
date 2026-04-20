@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 56px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .page-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-link:hover { color: var(--gold); }
+
+    .category-group { margin-bottom: 56px; }
+
+    .category-name {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .projects-grid.single { grid-template-columns: repeat(1, 360px); }
+
+    /* ── PROJECT CARD ── */
+    .project-card {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .project-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+
+    /* ── CARD VISUAL ── */
+    .card-visual {
+      width: 100%;
+      height: 140px;
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+    .proj-title { font-size: 15px; font-weight: 500; color: var(--cream); }
+    .proj-desc { font-size: 13px; color: var(--muted); line-height: 1.65; flex: 1; }
+    .proj-metric { font-size: 13px; color: var(--gold); font-weight: 500; padding-top: 10px; border-top: 0.5px solid var(--border); }
+
+    .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .proj-tag { font-size: 11px; padding: 3px 10px; border-radius: 3px; border: 0.5px solid var(--border); color: var(--muted); }
+
+    /* ── SPECTROGRAM BARS (Bird Sound) ── */
+    .spec-bar {
+      position: absolute;
+      bottom: 0;
+      width: 6px;
+      border-radius: 2px 2px 0 0;
+      animation: specPulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes specPulse {
+      0%, 100% { transform: scaleY(0.2); opacity: 0.3; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    /* ── DOTS (Population Mobility) ── */
+    .mob-dot {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: moveDot linear infinite;
+    }
+
+    @keyframes moveDot {
+      0% { transform: translate(0, 0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+    }
+
+    /* ── CHURN LINE ── */
+    .churn-svg { width: 100%; height: 100%; }
+
+    @keyframes drawLine {
+      from { stroke-dashoffset: 600; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .churn-path {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+      animation: drawLine 2s ease-out forwards infinite;
+    }
+
+    /* ── AB BARS ── */
+    .ab-bar {
+      position: absolute;
+      bottom: 20px;
+      border-radius: 4px 4px 0 0;
+      animation: growBar 1.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes growBar {
+      from { transform: scaleY(0.4); }
+      to { transform: scaleY(1); }
+    }
+
+    /* ── CLUSTER DOTS (Segmentation) ── */
+    .cluster-dot {
+      position: absolute;
+      border-radius: 50%;
+      animation: floatDot 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatDot {
+      from { transform: translate(0, 0); }
+      to { transform: translate(var(--fx), var(--fy)); }
+    }
+
+    /* ── AUDIO BARS (Spotify) ── */
+    .spotify-bar {
+      position: absolute;
+      bottom: 20px;
+      width: 8px;
+      border-radius: 2px 2px 0 0;
+      background: var(--gold);
+      animation: audioBounce ease-in-out infinite alternate;
+    }
+
+    @keyframes audioBounce {
+      from { transform: scaleY(0.15); }
+      to { transform: scaleY(1); }
+    }
+
+    /* ── PULSE LINE (Healthcare) ── */
+    @keyframes pulseLine {
+      from { stroke-dashoffset: 800; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .pulse-path {
+      stroke-dasharray: 800;
+      stroke-dashoffset: 800;
+      animation: pulseLine 2s linear infinite;
+    }
+
+    @media (max-width: 900px) { .projects-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .projects-grid, .projects-grid.single { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+
+    <div class="page-header">
+      <div class="section-label">Projects</div>
+      <div style="display:flex; gap:20px;">
+        <a href="index.html" class="page-link">← Home</a>
+        <a href="about.html" class="page-link">About →</a>
+      </div>
+    </div>
+
+    <!-- MACHINE LEARNING -->
+    <div class="category-group">
+      <div class="category-name">Machine Learning</div>
+      <div class="projects-grid">
+
+        <a href="bird-sound.html" class="project-card">
+          <div class="card-visual" id="vis-bird"></div>
+          <div class="card-body">
+            <div class="proj-title">Bird Sound Classification</div>
+            <div class="proj-desc">Custom CNN architectures trained on spectrogram images to classify 12 Seattle-area bird species from their calls — comparing binary vs multi-class approaches.</div>
+            <div class="proj-metric">100% binary · 70% multi-class accuracy</div>
+            <div class="proj-tags">
+              <span class="proj-tag">TensorFlow</span>
+              <span class="proj-tag">CNN</span>
+              <span class="proj-tag">Python</span>
+              <span class="proj-tag">Librosa</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="population-mobility.html" class="project-card">
+          <div class="card-visual" id="vis-mob"></div>
+          <div class="card-body">
+            <div class="proj-title">Population Mobility Prediction</div>
+            <div class="proj-desc">Compared 10 regression models on BTS trip data to predict long-distance travel demand across 39 Washington State counties.</div>
+            <div class="proj-metric">R² = 0.983 · Best: Random Forest</div>
+            <div class="proj-tags">
+              <span class="proj-tag">scikit-learn</span>
+              <span class="proj-tag">Random Forest</span>
+              <span class="proj-tag">Pandas</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="customer-churn.html" class="project-card">
+          <div class="card-visual" id="vis-churn"></div>
+          <div class="card-body">
+            <div class="proj-title">Customer Churn Analysis</div>
+            <div class="proj-desc">EDA and Logistic Regression on 7,043 telecom customers to identify churn drivers and flag at-risk customers before they leave.</div>
+            <div class="proj-metric">79.4% recall · ROC-AUC 0.825</div>
+            <div class="proj-tags">
+              <span class="proj-tag">scikit-learn</span>
+              <span class="proj-tag">Pandas</span>
+              <span class="proj-tag">Seaborn</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ANALYTICS & TESTING -->
+    <div class="category-group">
+      <div class="category-name">Analytics & Testing</div>
+      <div class="projects-grid">
+
+        <a href="ab-testing.html" class="project-card">
+          <div class="card-visual" id="vis-ab"></div>
+          <div class="card-body">
+            <div class="proj-title">A/B Testing Analysis</div>
+            <div class="proj-desc">Rigorous statistical analysis of a website background color change across 5,000 users — testing whether design decisions meaningfully impact conversion rates.</div>
+            <div class="proj-metric">+8.7pp conversion lift · p &lt; 0.001</div>
+            <div class="proj-tags">
+              <span class="proj-tag">SciPy</span>
+              <span class="proj-tag">Z-test</span>
+              <span class="proj-tag">Pandas</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="customer-segmentation.html" class="project-card">
+          <div class="card-visual" id="vis-seg"></div>
+          <div class="card-body">
+            <div class="proj-title">Customer Segmentation</div>
+            <div class="proj-desc">RFM analysis and K-Means clustering on 541,909 transactions to identify four distinct customer groups — each with a tailored retention and growth strategy.</div>
+            <div class="proj-metric">4,372 customers · 4 segments identified</div>
+            <div class="proj-tags">
+              <span class="proj-tag">K-Means</span>
+              <span class="proj-tag">RFM</span>
+              <span class="proj-tag">scikit-learn</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="ua-delays.html" class="project-card">
+          <div class="card-visual" id="vis-ua"></div>
+          <div class="card-body">
+            <div class="proj-title">United Airlines Delay Analysis</div>
+            <div class="proj-desc">10-year comparative analysis of 212,015 United Airlines flights from NYC airports — testing which delay factors changed between 2013 and 2023–2024 using permutation tests.</div>
+            <div class="proj-metric">212K flights · 6 factors · 1,000 permutations each</div>
+            <div class="proj-tags">
+              <span class="proj-tag">R</span>
+              <span class="proj-tag">tidyverse</span>
+              <span class="proj-tag">ggplot2</span>
+              <span class="proj-tag">Permutation testing</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- BI & DASHBOARDS -->
+    <div class="category-group">
+      <div class="category-name">Data Engineering</div>
+      <div class="projects-grid" style="grid-template-columns: repeat(1, 360px);">
+
+        <a href="ecommerce-pipeline.html" class="project-card">
+          <div class="card-visual" id="vis-pipeline"></div>
+          <div class="card-body">
+            <div class="proj-title">E-Commerce Data Pipeline with ML Forecasting</div>
+            <div class="proj-desc">End-to-end automated pipeline — daily ingestion into Snowflake, dbt transformations, anomaly detection, Prophet forecasting, and a Streamlit dashboard with an AI assistant.</div>
+            <div class="proj-metric">5 phases · 36 dbt tests · runs daily</div>
+            <div class="proj-tags">
+              <span class="proj-tag">Snowflake</span>
+              <span class="proj-tag">dbt</span>
+              <span class="proj-tag">Prefect</span>
+              <span class="proj-tag">Prophet</span>
+              <span class="proj-tag">Streamlit</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- BI & DASHBOARDS -->
+    <div class="category-group">
+      <div class="category-name">BI & Dashboards</div>
+      <div class="projects-grid" style="grid-template-columns: repeat(2, 1fr);">
+
+        <a href="healthcare.html" class="project-card">
+          <div class="card-visual" id="vis-health"></div>
+          <div class="card-body">
+            <div class="proj-title">Healthcare Dashboard</div>
+            <div class="proj-desc">Interactive Streamlit dashboard analyzing 55,392 patient records — enabling healthcare administrators to explore costs, conditions, and care patterns without SQL knowledge.</div>
+            <div class="proj-metric">55,392 records · 40+ SQL queries · 6 sections</div>
+            <div class="proj-tags">
+              <span class="proj-tag">Streamlit</span>
+              <span class="proj-tag">MySQL</span>
+              <span class="proj-tag">Plotly</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="spotify.html" class="project-card">
+          <div class="card-visual" id="vis-spotify"></div>
+          <div class="card-body">
+            <div class="proj-title">Spotify Listening History</div>
+            <div class="proj-desc">20 months of personal listening data — extracted from raw JSON, cleaned in Python, and visualized in a 4-page Power BI dashboard with 21 custom DAX measures.</div>
+            <div class="proj-metric">2,727 records · skip rate dropped 8pp year-over-year</div>
+            <div class="proj-tags">
+              <span class="proj-tag">Power BI</span>
+              <span class="proj-tag">DAX</span>
+              <span class="proj-tag">Python</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+  </main>
+
+<script>
+// ── BIRD SOUND: spectrogram bars ──
+(function() {
+  const el = document.getElementById('vis-bird');
+  const colors = ['#c9a84c','#e8d5a0','#8a7f70','#c9a84c','#e8d5a0','#5a4535'];
+  const w = el.offsetWidth || 300;
+  const count = Math.floor(w / 7);
+  for (let i = 0; i < count; i++) {
+    const b = document.createElement('div');
+    b.className = 'spec-bar';
+    b.style.left = (i * 7) + 'px';
+    b.style.height = (15 + Math.random() * 100) + 'px';
+    b.style.background = colors[Math.floor(Math.random() * colors.length)];
+    b.style.animationDelay = (Math.random() * 3) + 's';
+    b.style.animationDuration = (2.5 + Math.random() * 2) + 's';
+    el.appendChild(b);
+  }
+})();
+
+// ── POPULATION MOBILITY: county map ──
+(function() {
+  const el = document.getElementById('vis-mob');
+  const W = el.offsetWidth || 300;
+  const H = 140;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');
+  svg.setAttribute('height','100%');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  el.appendChild(svg);
+
+  const cols = 8, rows = 5;
+  const cw = Math.floor(W/cols), ch = Math.floor(H/rows);
+  const counties = [];
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = c*cw+2, y = r*ch+2, w = cw-4, h = ch-4;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',x); rect.setAttribute('y',y);
+      rect.setAttribute('width',w); rect.setAttribute('height',h);
+      rect.setAttribute('rx',2); rect.setAttribute('fill','#231e18');
+      rect.setAttribute('stroke','rgba(201,168,76,0.15)');
+      rect.setAttribute('stroke-width','0.5');
+      svg.appendChild(rect);
+      counties.push({ x: x+w/2, y: y+h/2, rect });
+    }
+  }
+
+  function pulseCounty(idx, color, delay) {
+    setTimeout(() => {
+      counties[idx].rect.setAttribute('fill', color);
+      setTimeout(() => counties[idx].rect.setAttribute('fill','#231e18'), 600);
+    }, delay);
+  }
+
+  function drawRoute(a, b, delay) {
+    const from = counties[a], to = counties[b];
+    setTimeout(() => {
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1',from.x); line.setAttribute('y1',from.y);
+      line.setAttribute('x2',to.x); line.setAttribute('y2',to.y);
+      line.setAttribute('stroke','#c9a84c'); line.setAttribute('stroke-width','1');
+      line.setAttribute('stroke-linecap','round'); line.setAttribute('opacity','0');
+      const len = Math.hypot(to.x-from.x, to.y-from.y);
+      line.setAttribute('stroke-dasharray',len); line.setAttribute('stroke-dashoffset',len);
+      svg.appendChild(line);
+      let s=null;
+      function animIn(ts) {
+        if(!s) s=ts;
+        const p = Math.min((ts-s)/800,1);
+        line.setAttribute('stroke-dashoffset', len*(1-p));
+        line.setAttribute('opacity', p*0.8);
+        if(p<1) requestAnimationFrame(animIn);
+        else setTimeout(()=>{ let s2=null; function animOut(ts){ if(!s2)s2=ts; const p2=Math.min((ts-s2)/400,1); line.setAttribute('opacity',(1-p2)*0.8); if(p2<1) requestAnimationFrame(animOut); else line.remove(); } requestAnimationFrame(animOut); }, 300);
+      }
+      requestAnimationFrame(animIn);
+      pulseCounty(a,'rgba(201,168,76,0.5)',0);
+      pulseCounty(b,'rgba(232,213,160,0.4)',350);
+    }, delay);
+  }
+
+  const routes = [[0,20],[3,20],[7,20],[32,20],[35,12],[28,20],[1,12],[39,20],[14,20],[6,27],[33,20],[2,19]];
+  function runCycle() {
+    routes.forEach(([a,b],i) => drawRoute(a,b,i*1200));
+    setTimeout(runCycle, routes.length*1200+1600);
+  }
+  runCycle();
+})();
+
+// ── CUSTOMER CHURN: falling line ──
+(function() {
+  const el = document.getElementById('vis-churn');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+  svg.setAttribute('viewBox', '0 0 300 140');
+  svg.innerHTML = `
+    <path d="M0,30 C20,28 40,25 60,28 C80,31 90,35 110,45 C130,55 140,70 160,85 C180,100 200,110 220,118 C240,126 260,130 300,135"
+      fill="none" stroke="#c9a84c" stroke-width="2" stroke-linecap="round" class="churn-path"/>
+    <path d="M0,20 C30,18 60,22 90,20 C120,18 150,25 180,30 C210,35 240,32 300,28"
+      fill="none" stroke="#5a4535" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  `;
+  el.appendChild(svg);
+})();
+
+// ── A/B TESTING: two side-by-side bars ──
+(function() {
+  const el = document.getElementById('vis-ab');
+  const pairs = [
+    { x: 60, hA: 60, hB: 100 },
+    { x: 130, hA: 55, hB: 95 },
+    { x: 200, hA: 58, hB: 98 }
+  ];
+  pairs.forEach((p, i) => {
+    const bA = document.createElement('div');
+    bA.className = 'ab-bar';
+    bA.style.left = p.x + 'px';
+    bA.style.width = '22px';
+    bA.style.height = p.hA + 'px';
+    bA.style.background = '#5a4535';
+    bA.style.animationDelay = (i * 0.2) + 's';
+    bA.style.animationDuration = '1.8s';
+    bA.style.transformOrigin = 'bottom';
+
+    const bB = document.createElement('div');
+    bB.className = 'ab-bar';
+    bB.style.left = (p.x + 26) + 'px';
+    bB.style.width = '22px';
+    bB.style.height = p.hB + 'px';
+    bB.style.background = '#c9a84c';
+    bB.style.animationDelay = (i * 0.2 + 0.1) + 's';
+    bB.style.animationDuration = '1.8s';
+    bB.style.transformOrigin = 'bottom';
+
+    el.appendChild(bA);
+    el.appendChild(bB);
+  });
+})();
+
+// ── CUSTOMER SEGMENTATION: cluster dots ──
+(function() {
+  const el = document.getElementById('vis-seg');
+  const clusters = [
+    { cx: 20, cy: 30, color: '#c9a84c', size: 10, count: 3 },
+    { cx: 45, cy: 50, color: '#e8d5a0', size: 6, count: 8 },
+    { cx: 70, cy: 35, color: '#8a7f70', size: 5, count: 12 },
+    { cx: 60, cy: 70, color: '#5a4535', size: 5, count: 10 }
+  ];
+  clusters.forEach((c, ci) => {
+    for (let i = 0; i < c.count; i++) {
+      const d = document.createElement('div');
+      d.className = 'cluster-dot';
+      const ox = (Math.random() - 0.5) * 20;
+      const oy = (Math.random() - 0.5) * 20;
+      d.style.left = (c.cx + ox) + '%';
+      d.style.top = (c.cy + oy) + '%';
+      d.style.width = d.style.height = (c.size * (0.6 + Math.random() * 0.8)) + 'px';
+      d.style.background = c.color;
+      d.style.opacity = 0.7 + Math.random() * 0.3;
+      d.style.setProperty('--fx', ((Math.random() - 0.5) * 8) + 'px');
+      d.style.setProperty('--fy', ((Math.random() - 0.5) * 8) + 'px');
+      d.style.animationDuration = (2 + Math.random() * 2) + 's';
+      d.style.animationDelay = (Math.random() * 2) + 's';
+      el.appendChild(d);
+    }
+  });
+})();
+
+// ── SPOTIFY: floating notes ──
+(function() {
+  const el = document.getElementById('vis-spotify');
+  const notes = ['♩','♪','♫','♬'];
+  const colors = ['#c9a84c','#e8d5a0','#8a7f70'];
+  for (let i = 0; i < 14; i++) {
+    const n = document.createElement('div');
+    n.style.position = 'absolute';
+    n.style.bottom = '8px';
+    n.style.left = (5 + Math.random() * 88) + '%';
+    n.style.fontSize = (13 + Math.random() * 13) + 'px';
+    n.style.color = colors[i % colors.length];
+    n.style.opacity = '0';
+    n.textContent = notes[i % notes.length];
+    n.style.animation = `noteFloat ${2 + Math.random() * 2}s ease-out ${Math.random() * 3}s infinite`;
+    el.appendChild(n);
+  }
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes noteFloat {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+      15%  { opacity: 1; }
+      80%  { opacity: 0.8; }
+      100% { transform: translateY(-120px) rotate(15deg); opacity: 0; }
+    }`;
+  document.head.appendChild(style);
+})();
+
+// ── UA DELAYS: flight paths with plane icon ──
+(function() {
+  const el = document.getElementById('vis-ua');
+  if (!el) return;
+  const W = el.offsetWidth || 300;
+  const H = 140;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');
+  svg.setAttribute('height','100%');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  el.appendChild(svg);
+
+  const ox = 55, oy = H * 0.58;
+  const destinations = [
+    { x: W*0.55, y: H*0.18, delayed: false },
+    { x: W*0.78, y: H*0.32, delayed: true  },
+    { x: W*0.92, y: H*0.55, delayed: false },
+    { x: W*0.65, y: H*0.78, delayed: true  },
+    { x: W*0.88, y: H*0.82, delayed: false },
+  ];
+
+  const odot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  odot.setAttribute('cx',ox); odot.setAttribute('cy',oy);
+  odot.setAttribute('r','3.5'); odot.setAttribute('fill','#e8d5a0');
+  svg.appendChild(odot);
+
+  const olabel = document.createElementNS('http://www.w3.org/2000/svg','text');
+  olabel.setAttribute('x',ox-6); olabel.setAttribute('y',oy+13);
+  olabel.setAttribute('font-size','8'); olabel.setAttribute('fill','#8a7f70');
+  olabel.setAttribute('text-anchor','middle'); olabel.textContent='NYC';
+  svg.appendChild(olabel);
+
+  function makePlane(color) {
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('font-size','12'); t.setAttribute('fill',color);
+    t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('opacity','0'); t.textContent='✈';
+    svg.appendChild(t);
+    return t;
+  }
+
+  function drawRoute(dest, index) {
+    const delayed = dest.delayed;
+    const color = delayed ? '#c9a84c' : '#8a7f70';
+    const cx = (ox + dest.x) / 2;
+    const cy = Math.min(oy, dest.y) - 35;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const d = `M${ox},${oy} Q${cx},${cy} ${dest.x},${dest.y}`;
+    path.setAttribute('d',d); path.setAttribute('fill','none');
+    path.setAttribute('stroke',color);
+    path.setAttribute('stroke-width', delayed ? '1' : '0.6');
+    path.setAttribute('stroke-dasharray','3 4');
+    path.setAttribute('opacity','0');
+    svg.insertBefore(path, odot);
+
+    const ddot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    ddot.setAttribute('cx',dest.x); ddot.setAttribute('cy',dest.y);
+    ddot.setAttribute('r', delayed ? '3.5' : '2.5');
+    ddot.setAttribute('fill', delayed ? '#c9a84c' : '#3a2f22');
+    ddot.setAttribute('stroke',color); ddot.setAttribute('stroke-width','0.8');
+    ddot.setAttribute('opacity','0.5');
+    svg.insertBefore(ddot, odot);
+
+    const plane = makePlane(color);
+
+    function animate() {
+      const duration = 4000 + Math.random() * 2000;
+      const startDelay = index * 900 + Math.random() * 300;
+      setTimeout(() => {
+        path.setAttribute('opacity', delayed ? '0.6' : '0.25');
+        let s = null;
+        function step(ts) {
+          if (!s) s = ts;
+          const p = Math.min((ts - s) / duration, 1);
+          if (path.getPointAtLength) {
+            const len = path.getTotalLength();
+            const pt = path.getPointAtLength(len * p);
+            const ptPrev = path.getPointAtLength(Math.max(0, len * p - 2));
+            const angle = Math.atan2(pt.y - ptPrev.y, pt.x - ptPrev.x) * 180 / Math.PI;
+            plane.setAttribute('transform',`translate(${pt.x},${pt.y}) rotate(${angle})`);
+            plane.setAttribute('opacity','1');
+          }
+          if (p < 1) {
+            requestAnimationFrame(step);
+          } else {
+            plane.setAttribute('opacity','0');
+            if (delayed) {
+              let pulses = 0;
+              function pulse() {
+                if (pulses++ > 2) return;
+                ddot.setAttribute('r','6'); ddot.setAttribute('opacity','1');
+                setTimeout(() => { ddot.setAttribute('r','3.5'); ddot.setAttribute('opacity','0.5'); setTimeout(pulse, 500); }, 250);
+              }
+              pulse();
+            }
+            setTimeout(() => { path.setAttribute('opacity','0'); setTimeout(animate, 800); }, 1800);
+          }
+        }
+        requestAnimationFrame(step);
+      }, startDelay);
+    }
+    animate();
+  }
+  destinations.forEach((d,i) => drawRoute(d,i));
+})();
+
+// ── ECOMMERCE PIPELINE: flowing data nodes ──
+(function() {
+  const el = document.getElementById('vis-pipeline');
+  if (!el) return;
+  const W = el.offsetWidth || 300;
+  const H = 140;
+  const svg = document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','100%');
+  svg.setAttribute('height','100%');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  el.appendChild(svg);
+
+  const stages = [
+    { label: 'Ingest', x: W*0.1 },
+    { label: 'dbt',    x: W*0.3 },
+    { label: 'Detect', x: W*0.5 },
+    { label: 'Forecast',x: W*0.7 },
+    { label: 'Dashboard',   x: W*0.9 },
+  ];
+  const y = H/2;
+
+  for (let i = 0; i < stages.length - 1; i++) {
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', stages[i].x + 14); line.setAttribute('y1', y);
+    line.setAttribute('x2', stages[i+1].x - 14); line.setAttribute('y2', y);
+    line.setAttribute('stroke','rgba(201,168,76,0.2)'); line.setAttribute('stroke-width','1');
+    line.setAttribute('stroke-dasharray','3 3');
+    svg.appendChild(line);
+  }
+
+  stages.forEach((s) => {
+    const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    circle.setAttribute('cx', s.x); circle.setAttribute('cy', y);
+    circle.setAttribute('r','13'); circle.setAttribute('fill','#231e18');
+    circle.setAttribute('stroke','rgba(201,168,76,0.3)'); circle.setAttribute('stroke-width','0.8');
+    svg.appendChild(circle);
+    s.circle = circle;
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg','text');
+    label.setAttribute('x', s.x); label.setAttribute('y', y + 28);
+    label.setAttribute('font-size','8'); label.setAttribute('fill','#8a7f70');
+    label.setAttribute('text-anchor','middle'); label.textContent = s.label;
+    svg.appendChild(label);
+  });
+
+  function flowDot(startIdx) {
+    if (startIdx >= stages.length - 1) { setTimeout(() => flowDot(0), 600); return; }
+    const from = stages[startIdx], to = stages[startIdx + 1];
+    from.circle.setAttribute('fill','rgba(201,168,76,0.25)');
+    from.circle.setAttribute('stroke','#c9a84c');
+    setTimeout(() => { from.circle.setAttribute('fill','#231e18'); from.circle.setAttribute('stroke','rgba(201,168,76,0.3)'); }, 400);
+    const dot = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    dot.setAttribute('r','4'); dot.setAttribute('fill','#c9a84c');
+    dot.setAttribute('cx', from.x); dot.setAttribute('cy', y);
+    svg.appendChild(dot);
+    let s = null;
+    function step(ts) {
+      if (!s) s = ts;
+      const p = Math.min((ts - s) / 700, 1);
+      dot.setAttribute('cx', from.x + (to.x - from.x) * p);
+      if (p < 1) requestAnimationFrame(step);
+      else {
+        dot.remove();
+        if (startIdx + 1 === stages.length - 1) {
+          to.circle.setAttribute('fill','rgba(201,168,76,0.25)'); to.circle.setAttribute('stroke','#c9a84c');
+          setTimeout(() => { to.circle.setAttribute('fill','#231e18'); to.circle.setAttribute('stroke','rgba(201,168,76,0.3)'); setTimeout(() => flowDot(0), 400); }, 400);
+        } else { flowDot(startIdx + 1); }
+      }
+    }
+    requestAnimationFrame(step);
+  }
+  flowDot(0);
+})();
+
+(function() {
+  const el = document.getElementById('vis-health');
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('width', '100%');
+  svg.setAttribute('height', '100%');
+  svg.setAttribute('viewBox', '0 0 360 140');
+  svg.innerHTML = `
+    <path d="M0,70 L40,70 L55,70 L65,20 L75,110 L85,70 L100,70 L140,70 L155,70 L165,25 L175,115 L185,70 L200,70 L240,70 L255,70 L265,30 L275,108 L285,70 L300,70 L360,70"
+      fill="none" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="pulse-path"/>
+    <line x1="0" y1="70" x2="360" y2="70" stroke="#5a4535" stroke-width="0.5"/>
+  `;
+  el.appendChild(svg);
+})();
+</script>
+
+</body>
+</html>

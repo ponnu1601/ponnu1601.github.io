@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover { color: var(--gold); }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .page-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-link:hover { color: var(--gold); }
+
+    /* ── PAGE LAYOUT ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 48px;
+    }
+
+    /* ── ABOUT GRID ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    /* ── PHOTO ── */
+    .about-photo-wrap {
+      position: sticky;
+      top: 96px;
+    }
+
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 12px;
+      background: linear-gradient(160deg, #2a2218, #3d3025);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 72px;
+      color: var(--gold);
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+
+    .about-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,20,16,0.5), transparent 60%);
+      border-radius: 12px;
+    }
+
+    /* ── RIGHT CONTENT ── */
+
+    .about-intro {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      line-height: 1.4;
+      margin-bottom: 28px;
+      color: var(--cream);
+    }
+
+    .about-intro em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .about-text {
+      font-size: 17px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 0.5px;
+      background: var(--border);
+      margin: 36px 0;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .edu-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 12px;
+      padding: 20px 0;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .edu-item:last-child {
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .edu-degree {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--cream);
+      margin-bottom: 5px;
+    }
+
+    .edu-school {
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .edu-year {
+      font-size: 14px;
+      color: var(--gold);
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-photo-wrap { position: static; }
+      .about-photo { aspect-ratio: 1/1; font-size: 48px; }
+      .about-intro { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <div style="display:flex; gap:8px;">
+      <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
+      <div class="section-label" style="margin-bottom:0;">About</div>
+      <div style="display:flex; gap:20px;">
+        <a href="index.html" class="page-link">← Home</a>
+        <a href="projects.html" class="page-link">Projects →</a>
+      </div>
+    </div>
+
+    <div class="about-grid">
+
+      <!-- LEFT: Photo -->
+      <div class="about-photo-wrap">
+        <div class="about-photo">
+          <img src="photo-about.jpg" alt="Ponnu Soman" style="width:100%;height:100%;object-fit:cover;" />
+        </div>
+      </div>
+
+      <!-- RIGHT: Content -->
+      <div class="about-right">
+
+        <div class="about-intro">
+          A mathematician who fell in love with <em>the stories data tells.</em>
+        </div>
+
+        <p class="about-text">
+          Originally from Kollam, Kerala, India — I came to the US for my master's and fell in love with the intersection of rigorous mathematics and real-world problem solving. My background in pure mathematics gives me a stronger foundation than most for statistical reasoning, while my MS in Data Science from Seattle University sharpened my applied skills across machine learning, analytics, and business intelligence.
+        </p>
+
+        <p class="about-text">
+          I care deeply about making data understandable to decision-makers, not just other data people. Every project I build ends with one question: "So what do we do with this?" That question shapes everything — from feature engineering choices to how I design a dashboard. The goal is never just a model. It's a decision someone can act on.
+        </p>
+
+        <p class="about-text">
+          Currently based in Hillsboro, Oregon, open to Data Scientist, Data Analyst, and Business Intelligence Analyst roles across the US.
+        </p>
+
+        <div class="divider"></div>
+
+        <!-- Education -->
+        <div class="edu-label">Education</div>
+
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">MS in Data Science</div>
+            <div class="edu-school">Seattle University</div>
+          </div>
+          <div class="edu-year">2023 – 2025</div>
+        </div>
+
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Integrated MSc in Mathematics</div>
+            <div class="edu-school">Amrita Vishwa Vidyapeetham</div>
+          </div>
+          <div class="edu-year">2017 – 2022</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
