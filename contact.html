@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Ponnu Soman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:        #1a1410;
+      --cream:      #f5f0e8;
+      --gold:       #c9a84c;
+      --gold-light: #e8d5a0;
+      --card:       #231e18;
+      --muted:      #8a7f70;
+      --border:     rgba(201, 168, 76, 0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 48px;
+      background: rgba(26, 20, 16, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .nav-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      letter-spacing: 0.02em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+
+    .nav-cv {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 4px;
+      text-decoration: none;
+      background: rgba(201,168,76,0.08);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-cv:hover { background: var(--gold); color: var(--ink); }
+
+    .page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 72px 48px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .page-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .page-link:hover { color: var(--gold); }
+
+    .contact-intro {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      color: var(--cream);
+    }
+
+    .contact-intro em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .contact-sub {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 48px;
+    }
+
+    /* ── FORM ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 7px;
+      padding: 12px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-group textarea {
+      height: 140px;
+    }
+
+    .form-submit {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-send {
+      padding: 13px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      background: rgba(201,168,76,0.12);
+      color: var(--gold);
+      border: 0.5px solid var(--gold);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-send:hover {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .form-note {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── SUCCESS MESSAGE ── */
+    .success-msg {
+      display: none;
+      background: rgba(201,168,76,0.08);
+      border: 0.5px solid var(--gold);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-size: 15px;
+      color: var(--gold);
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 0.5px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── CONTACT LINKS ── */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-link:hover { border-color: var(--gold); color: var(--cream); }
+
+    .contact-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(201,168,76,0.08);
+      border: 0.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: var(--gold); flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 14px 24px; }
+      .page { padding: 48px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .contact-intro { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-name">Ponnu Soman</a>
+    <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
+  </nav>
+
+  <main class="page">
+
+    <div class="page-header">
+      <div class="section-label">Contact</div>
+      <a href="index.html" class="page-link">← Home</a>
+    </div>
+
+    <h1 class="contact-intro">Let's work <em>together.</em></h1>
+    <p class="contact-sub">Open to Data Scientist, Data Analyst, and BI Analyst roles across the US. Fill in the form below or reach out directly via email or LinkedIn.</p>
+
+    <!-- ══ FORM ══ -->
+    <form class="contact-form" action="https://formspree.io/f/xrerakpr" method="POST" id="contact-form">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" name="subject" placeholder="e.g. Job opportunity, collaboration..." />
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell me about the opportunity or what you have in mind..." required></textarea>
+      </div>
+
+      <div class="form-submit">
+        <button type="submit" class="btn-send">Send Message</button>
+        <span class="form-note">Usually respond within 24 hours.</span>
+      </div>
+
+    </form>
+
+    <div class="success-msg" id="success-msg">
+      Message sent! I'll get back to you within 24 hours.
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Direct links -->
+    <div class="contact-links">
+      <a href="mailto:your@email.com" class="contact-link">
+        <span class="contact-icon">✉</span>
+        ponnus1601@email.com
+      </a>
+      <a href="https://linkedin.com/in/ponnu-soman" target="_blank" class="contact-link">
+        <span class="contact-icon">in</span>
+        linkedin.com/in/ponnu-soman
+      </a>
+      <a href="https://github.com/ponnu1601" target="_blank" class="contact-link">
+        <span class="contact-icon">gh</span>
+        github.com/ponnu1601
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const success = document.getElementById('success-msg');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+      });
+      if (response.ok) {
+        form.style.display = 'none';
+        success.style.display = 'block';
+      }
+    });
+  </script>
+
+</body>
+</html>
