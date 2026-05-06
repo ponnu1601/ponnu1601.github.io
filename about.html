@@ -236,7 +236,7 @@
   <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-name">Ponnu Soman</a>
-    <div style="display:flex; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
       <a href="contact.html" class="nav-cv">Contact</a>
       <a href="resume.pdf" target="_blank" class="nav-cv">Resume</a>
     </div>
@@ -256,7 +256,7 @@
       <!-- LEFT: Photo -->
       <div class="about-photo-wrap">
         <div class="about-photo">
-          <img src="photo-about.jpg" alt="Ponnu Soman" style="width:100%;height:100%;object-fit:cover;" />
+          <img src="photo-about.jpg" alt="Ponnu Soman" style="width:100%;height:100%;object-fit:cover;border-radius:12px;" />
         </div>
       </div>
 
@@ -268,16 +268,45 @@
         </div>
 
         <p class="about-text">
-          Originally from Kollam, Kerala, India — I came to the US for my master's and fell in love with the intersection of rigorous mathematics and real-world problem solving. My background in pure mathematics gives me a stronger foundation than most for statistical reasoning, while my MS in Data Science from Seattle University sharpened my applied skills across machine learning, analytics, and business intelligence.
+          Originally from Kollam, Kerala, India — with a background in Physics and Mathematics. Working with real data early in a career has a way of pulling you in. What started as analytical work quickly became a deeper curiosity about the models and methods behind it, which eventually led to pursuing an MS in Data Science at Seattle University to build that foundation properly.
         </p>
 
         <p class="about-text">
-          I care deeply about making data understandable to decision-makers, not just other data people. Every project I build ends with one question: "So what do we do with this?" That question shapes everything — from feature engineering choices to how I design a dashboard. The goal is never just a model. It's a decision someone can act on.
+          Making data understandable to decision-makers — not just other data people — is what drives every project. Every analysis ends with one question: "So what do we do with this?" That shapes everything, from how features get engineered to how a dashboard gets designed. The goal is never just a model. It's a decision someone can act on.
         </p>
 
         <p class="about-text">
-          Currently based in Hillsboro, Oregon, open to Data Scientist, Data Analyst, and Business Intelligence Analyst roles across the US.
+          Currently based in Hillsboro, Oregon, open to Data Analyst, Data Scientist, and Business Intelligence Analyst roles across the US.
         </p>
+
+        <div class="divider"></div>
+
+        <!-- Experience -->
+        <div class="edu-label">Experience</div>
+
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Data Analyst</div>
+            <div class="edu-school">US Bank, OR</div>
+          </div>
+          <div class="edu-year">Jul 2025 – Present</div>
+        </div>
+
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Student Data Scientist</div>
+            <div class="edu-school">Snohomish County (Capstone)</div>
+          </div>
+          <div class="edu-year">Jan 2025 – Jun 2025</div>
+        </div>
+
+        <div class="edu-item">
+          <div>
+            <div class="edu-degree">Data Analyst</div>
+            <div class="edu-school">Accenture, India</div>
+          </div>
+          <div class="edu-year">Jan 2022 – Aug 2023</div>
+        </div>
 
         <div class="divider"></div>
 
@@ -294,7 +323,7 @@
 
         <div class="edu-item">
           <div>
-            <div class="edu-degree">Integrated MSc in Mathematics</div>
+            <div class="edu-degree">Integrated MSc in Physics & Mathematics</div>
             <div class="edu-school">Amrita Vishwa Vidyapeetham</div>
           </div>
           <div class="edu-year">2017 – 2022</div>
@@ -324,9 +353,17 @@
       visibility: hidden;
       transition: opacity 0.3s, visibility 0.3s, background 0.2s;
       z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    #back-to-top.visible { opacity: 1; visibility: visible; }
-    #back-to-top:hover { background: rgba(201,168,76,0.25); }
+    #back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    #back-to-top:hover {
+      background: rgba(201,168,76,0.25);
+    }
   </style>
 
   <script>
@@ -336,6 +373,5 @@
       else btn.classList.remove('visible');
     });
   </script>
-
 </body>
 </html>
